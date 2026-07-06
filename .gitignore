@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Entorno
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# ENV
+.env
+
+# Sistema generado
+data/indexes/
+data/ocr/
+data/database/
+logs/
+
+# Cache
+*.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Builds futuros
+dist/
+build/
