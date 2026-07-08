@@ -1,5 +1,5 @@
 class Router:
-    VALID_VIEWS = {"dashboard", "library", "import", "search"}
+    VALID_VIEWS = {"dashboard", "library", "import", "search", "load_pdf", "scan_document"}
 
     def __init__(self):
         self._stack = ["dashboard"]
