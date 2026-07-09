@@ -15,10 +15,10 @@ class PreviewView:
         self.original_width = 0
         self.original_height = 0
 
-        self.zoom = 100
+        self.zoom = self.MIN_ZOOM
 
         self.zoom_text = ft.Text(
-            "100 %",
+            f"{self.zoom} %",
             width=60,
             text_align=ft.TextAlign.CENTER,
         )
@@ -89,7 +89,7 @@ class PreviewView:
             self.original_width = img.width
             self.original_height = img.height
 
-        self.zoom = 100
+        self.zoom = self.MIN_ZOOM
 
         self.btn_zoom_in.disabled = False
         self.btn_zoom_out.disabled = False
@@ -144,8 +144,8 @@ class PreviewView:
         self.btn_zoom_in.disabled = True
         self.btn_zoom_out.disabled = True
 
-        self.zoom = 100
-        self.zoom_text.value = "100 %"
+        self.zoom = self.MIN_ZOOM
+        self.zoom_text.value = f"{self.zoom} %"
 
         if self.container.page:
             self.container.update()

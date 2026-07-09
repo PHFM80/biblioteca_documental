@@ -31,3 +31,5 @@ Thumbs.db
 # Builds futuros
 dist/
 build/
+
+data/temp/
