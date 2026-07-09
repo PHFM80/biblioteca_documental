@@ -5,9 +5,15 @@ from app.ui.pages.scan_document.scan_actions import scan_actions
 from app.ui.pages.scan_document.preview import preview
 from app.ui.pages.scan_document.pages_area import pages_area
 from app.ui.pages.scan_document.finish_actions import finish_actions
+from app.ui.pages.scan_document.handlers import preview_scan
+
 from app.services.scanner.scanner_detector import ScannerDetector
-from app.services.scanner.exceptions import ScannerNotFoundError, ScannerDetectionError
+from app.services.scanner.exceptions import (
+    ScannerNotFoundError,
+    ScannerDetectionError,
+)
 from app.services.scanner.session import scanner_session
+
 
 def section(title, content):
     """
@@ -26,24 +32,27 @@ def section(title, content):
                     size=18,
                     weight=ft.FontWeight.BOLD,
                 ),
-
                 ft.Divider(),
-
                 content,
             ]
         ),
     )
+
 
 def _get_available_scanners():
     detector = ScannerDetector()
 
     try:
         result = detector.detect()
+
         print(result.message)
+
         if result.default_scanner:
             scanner_session.update(
-                scanner_name=result.default_scanner.name
+                scanner_id=result.default_scanner.id,
+                scanner_name=result.default_scanner.name,
             )
+
         return result.scanners
 
     except ScannerNotFoundError:
@@ -54,24 +63,15 @@ def _get_available_scanners():
         print(f"Error detectando escáneres: {e}")
         return []
 
-def view():
+
+def view(page):
     """
     Vista principal de escaneo.
-
-    Esta función solamente compone la interfaz.
-    La lógica se encuentra en:
-    
-    services/scanner/
-        - detector
-        - session
-        - apply_configuration
-        - scanner
-
-    ui/pages/scan_document/
-        - handlers
-        - componentes visuales
     """
+
     scanners = _get_available_scanners()
+
+    preview_view = preview()
 
     return ft.Container(
         expand=True,
@@ -83,10 +83,6 @@ def view():
 
             controls=[
 
-                # -------------------------------------------------
-                # Título de la sección
-                # -------------------------------------------------
-
                 ft.Text(
                     "Escanear documento",
                     size=30,
@@ -94,71 +90,28 @@ def view():
                 ),
 
 
-                # -------------------------------------------------
-                # Configuración del escáner
-                #
-                # Actualmente:
-                # - muestra configuración de sesión.
-                # - muestra dropdowns.
-                #
-                # Pendiente:
-                # - conectar detección automática.
-                # - aplicar configuración desde botón.
-                # -------------------------------------------------
-
                 section(
                     "Configuración del escáner",
-                    scanner_config(scanner_options=scanners),
+                    scanner_config(
+                        scanner_options=scanners
+                    ),
                 ),
 
 
+                scan_actions(
+                    on_preview=lambda e: preview_scan(
+                        e,
+                        page,
+                        preview_view,
+                    )
+                ),
 
-                # -------------------------------------------------
-                # Acciones principales
-                #
-                # Botones:
-                # - Vista previa.
-                # - Escanear página.
-                #
-                # Pendiente:
-                # - conectar eventos.
-                # -------------------------------------------------
-
-                scan_actions(),
-
-
-
-                # -------------------------------------------------
-                # Área grande de vista previa
-                #
-                # Actualmente:
-                # muestra placeholder.
-                #
-                # Futuro:
-                # - imagen escaneada.
-                # - zoom.
-                # - rotación.
-                # - ajustes.
-                # -------------------------------------------------
 
                 section(
                     "Vista previa",
-                    preview(),
+                    preview_view.container,
                 ),
 
-
-
-                # -------------------------------------------------
-                # Miniaturas de páginas escaneadas
-                #
-                # Actualmente:
-                # muestra "Próxima página aquí".
-                #
-                # Futuro:
-                # - lista dinámica de páginas.
-                # - mover páginas.
-                # - eliminar páginas.
-                # -------------------------------------------------
 
                 section(
                     "Páginas escaneadas",
@@ -166,30 +119,8 @@ def view():
                 ),
 
 
-
-                # -------------------------------------------------
-                # Acciones finales
-                #
-                # Botones:
-                # - Guardar documento.
-                # - Cancelar.
-                #
-                # Futuro:
-                # Guardar:
-                #   -> unir imágenes
-                #   -> generar PDF
-                #   -> OCR
-                #   -> indexar
-                #
-                # Cancelar:
-                #   -> limpiar sesión
-                #   -> descartar páginas temporales
-                # -------------------------------------------------
-
                 finish_actions(),
 
             ],
         ),
     )
-
-

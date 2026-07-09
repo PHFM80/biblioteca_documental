@@ -17,10 +17,10 @@ def scanner_config(scanner_options=None):
         label="Escáner",
         width=300,
         options=[
-            ft.dropdown.Option(scanner.name)
+            ft.dropdown.Option(key=scanner.id, text=scanner.name)
             for scanner in scanner_options
         ],
-        value=scanner_session.scanner_name,
+        value=scanner_session.scanner_id,
     )
 
     dpi_dropdown = ft.Dropdown(
@@ -74,8 +74,14 @@ def scanner_config(scanner_options=None):
 
     def on_apply(e):
         try:
+            scanner_id = scanner_dropdown.value
+
             apply_configuration(
-                scanner_name=scanner_dropdown.value,
+                scanner_id=scanner_id,
+                scanner_name=scanner_map.get(
+                    scanner_id,
+                    "Detectando automáticamente"
+                ),
                 dpi=int(
                     dpi_dropdown.value.replace(" DPI", "")
                 ),

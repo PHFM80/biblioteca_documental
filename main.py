@@ -33,7 +33,7 @@ async def main(page: ft.Page):
             content_area.content = load_pdf.view()
 
         elif router.current_view == "scan_document":
-            content_area.content = scan_document.view()
+            content_area.content = scan_document.view(page)
 
         page.update()
 

@@ -30,6 +30,7 @@ LIBRARY_DIR = BASE_DIR / os.getenv("LIBRARY_DIR", "data/library")
 OCR_DIR = BASE_DIR / os.getenv("OCR_DIR", "data/ocr")
 INDEX_DIR = BASE_DIR / os.getenv("INDEX_DIR", "data/indexes")
 DB_DIR = BASE_DIR / os.getenv("DB_DIR", "data/database")
+SCANNER_TEMP_DIR = DATA_DIR / "temp" / "scanner"
 
 TEXT_INDEX_DIR = INDEX_DIR / "text"
 SEMANTIC_INDEX_DIR = INDEX_DIR / "semantic"
@@ -54,5 +55,6 @@ def ensure_dirs():
         TEXT_INDEX_DIR,
         SEMANTIC_INDEX_DIR,
         DB_DIR,
+        SCANNER_TEMP_DIR,
     ]:
         path.mkdir(parents=True, exist_ok=True)

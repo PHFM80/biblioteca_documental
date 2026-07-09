@@ -49,3 +49,31 @@ def show_error(page: ft.Page, message: str):
     page.overlay.append(snack)
     snack.open = True
     page.update()
+
+def preview_scan(
+    e,
+    page,
+    preview_view,
+):
+    """
+    Ejecuta una previsualización del escaneo.
+    """
+
+    try:
+        from app.services.scanner.scanner import ScannerService
+
+        scanner = ScannerService()
+
+        image_path = scanner.preview()
+
+        preview_view.update_image(
+            image_path
+        )
+
+        page.update()
+
+    except ScannerError as error:
+        show_error(
+            page,
+            str(error),
+        )

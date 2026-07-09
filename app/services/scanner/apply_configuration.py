@@ -21,6 +21,7 @@ VALID_PAGE_SIZES = {
 
 def apply_configuration(
     *,
+    scanner_id: str | None,
     scanner_name: str,
     dpi: int,
     color_mode: str,
@@ -66,6 +67,7 @@ def apply_configuration(
         )
 
     scanner_session.update(
+        scanner_id=scanner_id,
         scanner_name=scanner_name,
         dpi=dpi,
         color_mode=color_mode,
