@@ -3,13 +3,14 @@ import flet as ft
 from app.core.init import initialize_app
 from app.ui.router import Router
 from app.ui.layout.sidebar import Sidebar
-
+from app.db import initialize_database
 from app.ui.pages import dashboard, library, import_doc, search, load_pdf, scan_document
 from app.core.window import configure_window
 
 async def main(page: ft.Page):
     await configure_window(page)
     initialize_app()
+    initialize_database()
 
     router = Router()
 
