@@ -1,8 +1,11 @@
+#app\ui\pages\scan_document\handlers.py
 import flet as ft
 
 from app.services.scanner.apply_configuration import apply_configuration
 from app.services.scanner.exceptions import ScannerError
-
+from app.services.scanner.document_session import document_session
+from app.services.scanner.document_session import document_session
+from app.services.scanner.thumbnail_service import thumbnail_service
 
 def apply_scanner_configuration(
     e,
@@ -73,6 +76,72 @@ def preview_scan(
         page.update()
 
     except ScannerError as error:
+        show_error(
+            page,
+            str(error),
+        )
+
+def scan_page(
+    e,
+    page,
+    preview_view,
+    pages_view,
+):
+    """
+    Ejecuta un escaneo definitivo.
+
+    Flujo:
+
+    Scanner
+        ↓
+    Imagen original
+        ↓
+    Thumbnail
+        ↓
+    DocumentSession
+        ↓
+    UI
+    """
+
+    try:
+
+        from app.services.scanner.scanner import ScannerService
+
+        scanner = ScannerService()
+
+        # 1 - Escaneo original
+        image_path = scanner.scan()
+
+
+        # 2 - Crear miniatura
+        thumbnail_path = thumbnail_service.create(
+            image_path
+        )
+
+
+        # 3 - Registrar página
+        document_page = document_session.add_page(
+            image_path=image_path,
+            thumbnail_path=thumbnail_path,
+        )
+
+
+        # 4 - Actualizar interfaz
+        pages_view.add_page(
+            document_page
+        )
+
+
+        preview_view.update_image(
+            image_path
+        )
+
+
+        page.update()
+
+
+    except ScannerError as error:
+
         show_error(
             page,
             str(error),

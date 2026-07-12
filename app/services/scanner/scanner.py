@@ -1,3 +1,4 @@
+#app\services\scanner\scanner.py
 from pathlib import Path
 from datetime import datetime
 
@@ -20,8 +21,33 @@ class ScannerService:
 
     def preview(self) -> str:
         """
-        Realiza una captura de previsualización
-        y devuelve la ruta de la imagen generada.
+        Realiza una captura rápida de previsualización.
+        """
+
+        return self._capture(
+            prefix="preview"
+        )
+
+
+    def scan(self) -> str:
+        """
+        Realiza un escaneo definitivo de una página.
+
+        Devuelve la ruta del PNG temporal generado.
+        """
+
+        return self._capture(
+            prefix="scan"
+        )
+
+
+    def _capture(self, prefix: str) -> str:
+        """
+        Ejecuta una captura WIA y guarda la imagen
+        temporalmente.
+
+        La diferencia entre preview y scan está
+        únicamente en el propósito del archivo.
         """
 
         try:
@@ -29,7 +55,9 @@ class ScannerService:
 
             device = self._get_device()
 
-            image = device.Items(1).Transfer()
+            item = device.Items(1)
+
+            image = item.Transfer()
 
             SCANNER_TEMP_DIR.mkdir(
                 parents=True,
@@ -37,8 +65,8 @@ class ScannerService:
             )
 
             filename = (
-                f"preview_"
-                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                f"{prefix}_"
+                f"{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
                 ".png"
             )
 
@@ -60,7 +88,7 @@ class ScannerService:
 
         except Exception as exc:
             raise ScannerAcquisitionError(
-                f"No se pudo realizar la previsualización.\n{exc}"
+                f"No se pudo realizar el escaneo.\n{exc}"
             ) from exc
 
         finally:

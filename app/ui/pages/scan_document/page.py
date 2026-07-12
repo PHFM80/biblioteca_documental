@@ -1,3 +1,4 @@
+#app\ui\pages\scan_document\page.py
 import flet as ft
 
 from app.ui.pages.scan_document.scanner_config import scanner_config
@@ -5,7 +6,10 @@ from app.ui.pages.scan_document.scan_actions import scan_actions
 from app.ui.pages.scan_document.preview import preview
 from app.ui.pages.scan_document.pages_area import pages_area
 from app.ui.pages.scan_document.finish_actions import finish_actions
-from app.ui.pages.scan_document.handlers import preview_scan
+from app.ui.pages.scan_document.handlers import (
+    preview_scan,
+    scan_page,
+)
 
 from app.services.scanner.scanner_detector import ScannerDetector
 from app.services.scanner.exceptions import (
@@ -73,14 +77,14 @@ def view(page):
 
     preview_view = preview()
 
+    pages_view = pages_area()
+
     return ft.Container(
         expand=True,
         padding=30,
-
         content=ft.Column(
             scroll=ft.ScrollMode.AUTO,
             spacing=15,
-
             controls=[
 
                 ft.Text(
@@ -89,7 +93,6 @@ def view(page):
                     weight=ft.FontWeight.BOLD,
                 ),
 
-
                 section(
                     "Configuración del escáner",
                     scanner_config(
@@ -97,27 +100,29 @@ def view(page):
                     ),
                 ),
 
-
                 scan_actions(
                     on_preview=lambda e: preview_scan(
                         e,
                         page,
                         preview_view,
-                    )
+                    ),
+                    on_scan=lambda e: scan_page(
+                        e,
+                        page,
+                        preview_view,
+                        pages_view,
+                    ),
                 ),
-
 
                 section(
                     "Vista previa",
                     preview_view.container,
                 ),
 
-
                 section(
                     "Páginas escaneadas",
-                    pages_area(),
+                    pages_view.container,
                 ),
-
 
                 finish_actions(),
 
