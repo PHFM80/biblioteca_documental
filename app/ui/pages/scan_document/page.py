@@ -81,7 +81,10 @@ def view(page):
 
     actions_view = scan_actions()
     actions_view.preview_button.on_click = lambda e: preview_scan(e, page, preview_view)
-    actions_view.set_scan_handler(lambda e: scan_page(e, page, preview_view, pages_view, actions_view))
+
+    async def run_scan(e):await scan_page(e, page, preview_view, pages_view, actions_view)
+    actions_view.set_scan_handler(lambda e: page.run_task(run_scan, e))
+
 
     return ft.Container(
         expand=True,
@@ -90,30 +93,15 @@ def view(page):
             scroll=ft.ScrollMode.AUTO,
             spacing=15,
             controls=[
-                ft.Text(
-                    "Escanear documento",
-                    size=30,
-                    weight=ft.FontWeight.BOLD,
-                ),
+                ft.Text("Escanear documento", size=30, weight=ft.FontWeight.BOLD),
 
-                section(
-                    "Configuración del escáner",
-                    scanner_config(
-                        scanner_options=scanners
-                    ),
-                ),
+                section("Configuración del escáner", scanner_config(scanner_options=scanners)),
 
                 actions_view.container,
 
-                section(
-                    "Vista previa",
-                    preview_view.container,
-                ),
+                section("Vista previa", preview_view.container),
 
-                section(
-                    "Páginas escaneadas",
-                    pages_view.container,
-                ),
+                section("Páginas escaneadas", pages_view.container),
 
                 finish_actions(),
             ],

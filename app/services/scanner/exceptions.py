@@ -55,3 +55,10 @@ class ScannerFileError(ScannerError):
 
 class ScannerInternalError(ScannerError):
     default_message = "Se produjo un error interno durante el proceso de escaneo."
+
+class ScannerBusyError(ScannerError):
+    """
+    Se intenta iniciar un escaneo mientras
+    otro continúa en ejecución.
+    """
+

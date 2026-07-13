@@ -52,6 +52,7 @@ class ScanActions:
 
     def set_scanning(self, value: bool):
 
+        
         self.scanning = value
 
         self.scan_button.disabled = value
