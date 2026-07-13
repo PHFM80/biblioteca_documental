@@ -6,10 +6,7 @@ from app.ui.pages.scan_document.scan_actions import scan_actions
 from app.ui.pages.scan_document.preview import preview
 from app.ui.pages.scan_document.pages_area import pages_area
 from app.ui.pages.scan_document.finish_actions import finish_actions
-from app.ui.pages.scan_document.handlers import (
-    preview_scan,
-    scan_page,
-)
+from app.ui.pages.scan_document.handlers import (preview_scan, scan_page, remove_scanned_page)
 
 from app.services.scanner.scanner_detector import ScannerDetector
 from app.services.scanner.exceptions import (
@@ -78,6 +75,10 @@ def view(page):
     preview_view = preview()
 
     pages_view = pages_area()
+
+    pages_view.set_on_delete(
+        lambda page_number: remove_scanned_page(page_number, page, preview_view, pages_view)
+    )
 
     return ft.Container(
         expand=True,

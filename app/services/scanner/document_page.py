@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(slots=True)
 class DocumentPage:
     """
     Representa una página escaneada durante

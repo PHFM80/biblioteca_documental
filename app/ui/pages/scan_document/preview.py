@@ -25,6 +25,8 @@ class PreviewView:
 
         self.image = ft.Image(src="")
 
+        self.placeholder = ft.Text("Vista previa del documento",color=ft.Colors.GREY_600)
+
         self.btn_zoom_out = ft.IconButton(
             icon=ft.Icons.REMOVE,
             disabled=True,
@@ -48,13 +50,15 @@ class PreviewView:
             alignment=ft.Alignment(0.5, 0.5),
             content=ft.Column(
                 scroll=ft.ScrollMode.ALWAYS,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
+                    self.placeholder,
                     ft.Row(
                         scroll=ft.ScrollMode.ALWAYS,
                         controls=[
                             self.image,
                         ],
-                    )
+                    ),
                 ],
             ),
         )
@@ -78,6 +82,7 @@ class PreviewView:
         )
 
         self.image.visible = False
+        self.placeholder.visible = True
         self.btn_zoom_in.disabled = True
         self.btn_zoom_out.disabled = True
 
@@ -118,9 +123,11 @@ class PreviewView:
         if self.image_path is None:
             self.image.src = ""
             self.image.visible = False
+            self.placeholder.visible = True
         else:
             self.image.src = str(self.image_path)
             self.image.visible = True
+            self.placeholder.visible = False
 
         self.image.width = int(self.original_width * factor)
         self.image.height = int(self.original_height * factor)
@@ -132,14 +139,15 @@ class PreviewView:
     def clear(self):
         self.image.src = ""
         self.image.visible = False
+        self.placeholder.visible = True
 
-        self.viewer.content = ft.Container(
-            alignment=ft.Alignment(0.5, 0.5),
-            content=ft.Text(
-                "Vista previa del documento",
-                color=ft.Colors.GREY_600,
-            ),
-        )
+        self.image_path = None
+
+        self.image.src = ""
+        self.image.visible = False
+
+        self.placeholder.visible = True
+    
 
         self.btn_zoom_in.disabled = True
         self.btn_zoom_out.disabled = True

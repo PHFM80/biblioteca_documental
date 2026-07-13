@@ -6,6 +6,8 @@ from app.services.scanner.exceptions import ScannerError
 from app.services.scanner.document_session import document_session
 from app.services.scanner.document_session import document_session
 from app.services.scanner.thumbnail_service import thumbnail_service
+from app.services.scanner.document_session import document_session
+
 
 def apply_scanner_configuration(
     e,
@@ -38,7 +40,6 @@ def apply_scanner_configuration(
             page,
             str(error),
         )
-
 
 def show_error(page: ft.Page, message: str):
     """
@@ -127,15 +128,9 @@ def scan_page(
 
 
         # 4 - Actualizar interfaz
-        pages_view.add_page(
-            document_page
-        )
+        pages_view.add_page(document_page)
 
-
-        preview_view.update_image(
-            image_path
-        )
-
+        preview_view.update_image(image_path)
 
         page.update()
 
@@ -146,3 +141,80 @@ def scan_page(
             page,
             str(error),
         )
+
+def remove_page(
+    e,
+    page,
+    preview_view,
+    pages_view,
+    page_number: int,
+):
+    """
+    Elimina una página del documento.
+
+    El handler coordina la actualización de la
+    sesión y de la interfaz.
+    """
+
+    removed_page = document_session.remove_page(
+        page_number
+    )
+
+    if removed_page is None:
+        return
+
+    pages_view.remove_page(
+        page_number
+    )
+
+    last_page = document_session.get_last_page()
+
+    if last_page is None:
+        preview_view.clear()
+    else:
+        preview_view.update_image(
+            last_page.image_path
+        )
+
+    page.update()
+
+def remove_scanned_page(
+    page_number,
+    page,
+    preview_view,
+    pages_view,
+):
+    """
+    Elimina una página del documento actual.
+    """
+
+    removed_page = document_session.remove_page(
+        page_number
+    )
+
+    if removed_page is None:
+        return
+
+
+    pages_view.remove_page(
+        page_number
+    )
+
+
+    last_page = document_session.get_last_page()
+
+
+    if last_page:
+
+        preview_view.update_image(
+            last_page.image_path
+        )
+
+    else:
+
+        preview_view.clear()
+
+
+    page.update()
+
+
