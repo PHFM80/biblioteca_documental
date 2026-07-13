@@ -87,6 +87,7 @@ def scan_page(
     page,
     preview_view,
     pages_view,
+    actions_view,
 ):
     """
     Ejecuta un escaneo definitivo.
@@ -106,31 +107,31 @@ def scan_page(
 
     try:
 
+        actions_view.set_scanning(True)
+        page.update()
+
         from app.services.scanner.scanner import ScannerService
 
         scanner = ScannerService()
 
-        # 1 - Escaneo original
         image_path = scanner.scan()
 
-
-        # 2 - Crear miniatura
         thumbnail_path = thumbnail_service.create(
             image_path
         )
 
-
-        # 3 - Registrar página
         document_page = document_session.add_page(
             image_path=image_path,
             thumbnail_path=thumbnail_path,
         )
 
+        pages_view.add_page(
+            document_page
+        )
 
-        # 4 - Actualizar interfaz
-        pages_view.add_page(document_page)
-
-        preview_view.update_image(image_path)
+        preview_view.update_image(
+            image_path
+        )
 
         page.update()
 
@@ -141,6 +142,14 @@ def scan_page(
             page,
             str(error),
         )
+
+
+    finally:
+
+        actions_view.set_scanning(False)
+
+        if page:
+            page.update()
 
 def remove_page(
     e,

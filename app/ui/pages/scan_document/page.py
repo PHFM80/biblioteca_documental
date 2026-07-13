@@ -64,7 +64,6 @@ def _get_available_scanners():
         print(f"Error detectando escáneres: {e}")
         return []
 
-
 def view(page):
     """
     Vista principal de escaneo.
@@ -80,6 +79,10 @@ def view(page):
         lambda page_number: remove_scanned_page(page_number, page, preview_view, pages_view)
     )
 
+    actions_view = scan_actions()
+    actions_view.preview_button.on_click = lambda e: preview_scan(e, page, preview_view)
+    actions_view.set_scan_handler(lambda e: scan_page(e, page, preview_view, pages_view, actions_view))
+
     return ft.Container(
         expand=True,
         padding=30,
@@ -87,7 +90,6 @@ def view(page):
             scroll=ft.ScrollMode.AUTO,
             spacing=15,
             controls=[
-
                 ft.Text(
                     "Escanear documento",
                     size=30,
@@ -101,19 +103,7 @@ def view(page):
                     ),
                 ),
 
-                scan_actions(
-                    on_preview=lambda e: preview_scan(
-                        e,
-                        page,
-                        preview_view,
-                    ),
-                    on_scan=lambda e: scan_page(
-                        e,
-                        page,
-                        preview_view,
-                        pages_view,
-                    ),
-                ),
+                actions_view.container,
 
                 section(
                     "Vista previa",
@@ -126,7 +116,6 @@ def view(page):
                 ),
 
                 finish_actions(),
-
             ],
         ),
     )
