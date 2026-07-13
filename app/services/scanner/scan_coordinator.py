@@ -5,7 +5,6 @@ from threading import Lock
 class ScanCoordinator:
     """
     Coordina el ciclo completo de un escaneo.
-
     Garantiza que solamente exista
     un proceso de escaneo activo.
     """
@@ -17,12 +16,8 @@ class ScanCoordinator:
         return self._lock.acquire(blocking=False)
         
     def release(self) -> None:
-        
-        print("SCAN COORDINATOR -> release()")
-
         if self._lock.locked():
             self._lock.release()
-            print("SCAN COORDINATOR -> LOCK LIBERADO")
 
     @property
     def busy(self) -> bool:

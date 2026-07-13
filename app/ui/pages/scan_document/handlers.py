@@ -9,7 +9,7 @@ from app.services.scanner.document_session import document_session
 from app.services.scanner.thumbnail_service import thumbnail_service
 from app.services.scanner.document_session import document_session
 from app.services.scanner.scan_coordinator import scan_coordinator
-
+from app.services.image_processing.processor import ImageProcessingService
 
 def apply_scanner_configuration(
     e,
@@ -87,9 +87,7 @@ def preview_scan(
 async def scan_page(e, page, preview_view, pages_view, actions_view):
     """
     Ejecuta un escaneo definitivo.
-
     Flujo:
-
     Scanner
         ↓
     Imagen original
@@ -112,7 +110,8 @@ async def scan_page(e, page, preview_view, pages_view, actions_view):
         scanner = ScannerService()
 
         image_path = scanner.scan()
-
+        processor = ImageProcessingService()
+        image_path = processor.process(image_path)
         thumbnail_path = thumbnail_service.create(image_path)
 
         document_page = document_session.add_page(
