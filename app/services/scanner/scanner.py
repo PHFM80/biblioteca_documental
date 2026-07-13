@@ -31,7 +31,17 @@ class ScannerService:
 
         return self._capture(prefix="scan")
 
+    def _apply_configuration(self, item):
+        item.Properties["Horizontal Resolution"].Value = scanner_session.dpi
+        item.Properties["Vertical Resolution"].Value = scanner_session.dpi
 
+        if scanner_session.color_mode == "Blanco y negro":
+            item.Properties["Current Intent"].Value = 4
+        elif scanner_session.color_mode == "Escala de grises":
+            item.Properties["Current Intent"].Value = 2
+        elif scanner_session.color_mode == "Color":
+            item.Properties["Current Intent"].Value = 1
+        
     def _capture(self, prefix: str) -> str:
         """
         Ejecuta una captura WIA y guarda la imagen
@@ -47,7 +57,8 @@ class ScannerService:
             device = self._get_device()
 
             item = device.Items(1)
-
+            #self._debug_properties(item)
+            self._apply_configuration(item)
             image = item.Transfer()
 
             SCANNER_TEMP_DIR.mkdir(
@@ -114,3 +125,25 @@ class ScannerService:
         raise ScannerNotFoundError(
             "El escáner seleccionado no está disponible."
         )
+
+    def _debug_properties(self, item):
+        print("\n===== PROPIEDADES WIA =====")
+
+        for prop in item.Properties:
+            try:
+                print(
+                    prop.PropertyID,
+                    "|",
+                    prop.Name,
+                    "|",
+                    prop.Value
+                )
+            except Exception:
+                print(
+                    prop.PropertyID,
+                    "|",
+                    prop.Name,
+                    "| ERROR"
+                )
+
+        print("===========================\n")

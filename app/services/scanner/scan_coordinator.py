@@ -14,19 +14,8 @@ class ScanCoordinator:
         self._lock = Lock()
 
     def acquire(self) -> bool:
-
-        print("SCAN COORDINATOR -> acquire()")
-
-        acquired = self._lock.acquire(blocking=False)
-
-        if acquired:
-            print("SCAN COORDINATOR -> LOCK ADQUIRIDO")
-        else:
-            print("SCAN COORDINATOR -> LOCK OCUPADO")
-
-        return acquired
-
-
+        return self._lock.acquire(blocking=False)
+        
     def release(self) -> None:
         
         print("SCAN COORDINATOR -> release()")

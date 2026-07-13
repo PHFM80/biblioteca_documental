@@ -1,3 +1,4 @@
+#app\services\scanner\apply_configuration.py
 from app.services.scanner.exceptions import ScannerConfigurationError
 from app.services.scanner.session import scanner_session
 

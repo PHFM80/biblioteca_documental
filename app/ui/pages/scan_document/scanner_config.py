@@ -1,3 +1,4 @@
+#app\ui\pages\scan_document\scanner_config.py
 import flet as ft
 
 from app.services.scanner.session import scanner_session
@@ -7,6 +8,7 @@ from app.services.scanner.exceptions import ScannerConfigurationError
 
 def scanner_config(scanner_options=None):
     scanner_options = scanner_options or []
+    scanner_map = {scanner.id: scanner.name for scanner in scanner_options}
 
     scanner_text = ft.Text()
     dpi_text = ft.Text()
