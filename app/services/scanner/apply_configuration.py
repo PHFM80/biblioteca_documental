@@ -19,7 +19,6 @@ VALID_PAGE_SIZES = {
     "Sobre",
 }
 
-
 def apply_configuration(
     *,
     scanner_id: str | None,

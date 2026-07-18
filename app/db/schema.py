@@ -1,3 +1,4 @@
+#app\db\schema.py
 from app.db.database import execute_query
 
 
@@ -14,23 +15,14 @@ def create_documento_table() -> None:
     execute_query("""
         CREATE TABLE IF NOT EXISTS documento (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
             nombre TEXT NOT NULL,
-
             tipo_id INTEGER NOT NULL,
-
             ruta TEXT NOT NULL,
-
             tamaño_bytes INTEGER NOT NULL DEFAULT 0,
-
             fecha_creacion TEXT NOT NULL,
-
             fecha_modificacion TEXT NOT NULL,
-
             observaciones TEXT,
-
             hash_archivo TEXT UNIQUE,
-
             FOREIGN KEY (tipo_id)
                 REFERENCES tipo_documento(id)
                 ON DELETE RESTRICT
@@ -41,19 +33,12 @@ def create_documento_table() -> None:
 def create_documento_pdf_table() -> None:
     execute_query("""
         CREATE TABLE IF NOT EXISTS documento_pdf (
-
             documento_id INTEGER PRIMARY KEY,
-
             cantidad_paginas INTEGER NOT NULL DEFAULT 0,
-
             tiene_ocr INTEGER NOT NULL DEFAULT 0,
-
             tiene_indexacion INTEGER NOT NULL DEFAULT 0,
-
             texto_ocr_ruta TEXT,
-
             pdf_editable_ruta TEXT,
-
             FOREIGN KEY (documento_id)
                 REFERENCES documento(id)
                 ON DELETE CASCADE

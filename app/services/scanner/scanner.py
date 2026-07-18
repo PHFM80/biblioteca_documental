@@ -5,7 +5,6 @@ from datetime import datetime
 import pythoncom
 import win32com.client
 
-
 from app.core.config import SCANNER_TEMP_DIR
 from app.services.scanner.session import scanner_session
 from app.services.scanner.exceptions import (ScannerConnectionError, ScannerAcquisitionError, ScannerNotFoundError)
@@ -15,13 +14,11 @@ class ScannerService:
     """
     Servicio de comunicación con el escáner WIA.
     """
-
     def preview(self) -> str:
         """
         Realiza una captura rápida de previsualización.
         """
         return self._capture(prefix="preview")
-
 
     def scan(self) -> str:
         """
@@ -98,7 +95,6 @@ class ScannerService:
                 pythoncom.CoUninitialize()
             except Exception:
                 pass
-
 
     def _get_device(self):
         """
