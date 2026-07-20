@@ -21,25 +21,27 @@ class DocumentoPDFRepository:
                 documento_id,
                 cantidad_paginas,
                 tiene_ocr,
+                nombre_chino,
+                fecha_recepcion,
                 tiene_indexacion,
                 texto_ocr_ruta,
                 pdf_editable_ruta
             )
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
 
         try:
             with get_connection() as connection:
                 connection.execute(
                     query,
-                    (
-                        documento_pdf.documento_id,
-                        documento_pdf.cantidad_paginas,
-                        int(documento_pdf.tiene_ocr),
-                        int(documento_pdf.tiene_indexacion),
-                        documento_pdf.texto_ocr_ruta,
-                        documento_pdf.pdf_editable_ruta,
-                    )
+                    (documento_pdf.documento_id,
+                    documento_pdf.cantidad_paginas,
+                    int(documento_pdf.tiene_ocr),
+                    documento_pdf.nombre_chino,
+                    documento_pdf.fecha_recepcion,
+                    int(documento_pdf.tiene_indexacion),
+                    documento_pdf.texto_ocr_ruta,
+                    documento_pdf.pdf_editable_ruta)
                 )
 
             return documento_pdf
@@ -92,6 +94,8 @@ class DocumentoPDFRepository:
             SET
                 cantidad_paginas = ?,
                 tiene_ocr = ?,
+                nombre_chino = ?,
+                fecha_recepcion = ?,
                 tiene_indexacion = ?,
                 texto_ocr_ruta = ?,
                 pdf_editable_ruta = ?
@@ -102,14 +106,14 @@ class DocumentoPDFRepository:
             with get_connection() as connection:
                 connection.execute(
                     query,
-                    (
-                        documento_pdf.cantidad_paginas,
-                        int(documento_pdf.tiene_ocr),
-                        int(documento_pdf.tiene_indexacion),
-                        documento_pdf.texto_ocr_ruta,
-                        documento_pdf.pdf_editable_ruta,
-                        documento_pdf.documento_id,
-                    )
+                    (documento_pdf.cantidad_paginas,
+                    int(documento_pdf.tiene_ocr),
+                    documento_pdf.nombre_chino,
+                    documento_pdf.fecha_recepcion,
+                    int(documento_pdf.tiene_indexacion),
+                    documento_pdf.texto_ocr_ruta,
+                    documento_pdf.pdf_editable_ruta,
+                    documento_pdf.documento_id)
                 )
 
             return documento_pdf
@@ -219,7 +223,8 @@ class DocumentoPDFRepository:
             documento_id=row["documento_id"],
             cantidad_paginas=row["cantidad_paginas"],
             tiene_ocr=bool(row["tiene_ocr"]),
+            nombre_chino=row["nombre_chino"],
+            fecha_recepcion=row["fecha_recepcion"],
             tiene_indexacion=bool(row["tiene_indexacion"]),
             texto_ocr_ruta=row["texto_ocr_ruta"],
-            pdf_editable_ruta=row["pdf_editable_ruta"],
-        )
+            pdf_editable_ruta=row["pdf_editable_ruta"])

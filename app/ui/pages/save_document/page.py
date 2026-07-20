@@ -15,9 +15,8 @@ def section(title, content):
             controls=[
                 ft.Text(title, size=18, weight=ft.FontWeight.BOLD),
                 ft.Divider(),
-                content,
-            ],
-        ),
+                content],
+        )
     )
 
 
@@ -34,14 +33,9 @@ def view(page):
             scroll=ft.ScrollMode.AUTO,
             spacing=15,
             controls=[
-                ft.Text(
-                    "Guardar documento",
-                    size=30,
-                    weight=ft.FontWeight.BOLD,
-                ),
+                ft.Text("Guardar documento", size=30, weight=ft.FontWeight.BOLD),
                 section("Vista previa", preview_view),
                 section("Información del documento", form_view.container),
-                section("Acciones", actions_view.container),
-            ],
-        ),
+                section("Acciones", actions_view.container)],
+        )
     )

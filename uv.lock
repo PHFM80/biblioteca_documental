@@ -88,7 +88,7 @@ wheels = [
 [[package]]
 name = "biblioteca-documental"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "blake3" },
     { name = "faiss-cpu" },
@@ -116,6 +116,11 @@ dependencies = [
     { name = "tqdm" },
     { name = "watchdog" },
     { name = "whoosh" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -147,6 +152,9 @@ requires-dist = [
     { name = "watchdog", specifier = ">=6.0.0" },
     { name = "whoosh", specifier = ">=2.7.4" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "blake3"

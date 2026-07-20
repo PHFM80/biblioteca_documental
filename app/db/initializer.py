@@ -1,4 +1,5 @@
-#app\db\initializer.pyfrom app.db.database import check_connection
+#app\db\initializer.py
+from app.db.database import check_connection
 from app.db.schema import init_database
 
 
@@ -17,12 +18,5 @@ def initialize_database() -> None:
 
     init_database()
 
-
-def initialize_database() -> None:
-    """
-    Inicializa completamente la base de datos.
-    """
-
-    init_database()
 
 

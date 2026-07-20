@@ -4,23 +4,15 @@ import flet as ft
 
 class SaveDocumentActions:
     """
-    Acciones disponibles para el guardado del documento.
+    Expone las acciones disponibles en la vista.
 
     No contiene lógica de negocio.
-    Solamente expone los botones para que la vista
-    asigne sus eventos.
+    Solo asigna eventos definidos por la vista.
     """
 
     def __init__(self):
-        self.save_button = ft.ElevatedButton(
-            "Guardar",
-            icon=ft.Icons.SAVE,
-        )
-
-        self.cancel_button = ft.ElevatedButton(
-            "Cancelar",
-            icon=ft.Icons.CANCEL,
-        )
+        self.save_button = ft.ElevatedButton("Guardar", icon=ft.Icons.SAVE)
+        self.cancel_button = ft.ElevatedButton("Cancelar", icon=ft.Icons.CANCEL)
 
         self.container = ft.Row(
             alignment=ft.MainAxisAlignment.CENTER,

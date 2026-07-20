@@ -36,6 +36,8 @@ def create_documento_pdf_table() -> None:
             documento_id INTEGER PRIMARY KEY,
             cantidad_paginas INTEGER NOT NULL DEFAULT 0,
             tiene_ocr INTEGER NOT NULL DEFAULT 0,
+            nombre_chino TEXT,
+            fecha_recepcion TEXT,
             tiene_indexacion INTEGER NOT NULL DEFAULT 0,
             texto_ocr_ruta TEXT,
             pdf_editable_ruta TEXT,
