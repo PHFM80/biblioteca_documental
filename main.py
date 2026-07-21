@@ -32,7 +32,7 @@ async def main(page: ft.Page):
         elif router.current_view == "scan_document":
             content_area.content = scan_document.view(page, router, render)
         elif router.current_view == "save_document":
-            content_area.content = save_document.view(page)
+            content_area.content = save_document.view(page, router, render)
         else:
             content_area.content = dashboard.view()
 

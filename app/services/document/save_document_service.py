@@ -39,7 +39,11 @@ class SaveDocumentService:
         if not pages:
             raise ValueError("No existen páginas para guardar.")
 
-        pdf_path = self.pdf_generator.generate(pages, data.name)
+        #implementacion temporal de la ruta
+        from pathlib import Path
+        pdf_path = self.pdf_generator.generate(pages, Path(f"{data.name}.pdf"))
+        #implementacion final
+        # pdf_path = self.pdf_generator.generate(pages, data.name)
 
         # Crear y persistir Documento
 

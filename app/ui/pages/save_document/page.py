@@ -4,6 +4,7 @@ import flet as ft
 from app.ui.pages.save_document.preview import preview
 from app.ui.pages.save_document.form import form
 from app.ui.pages.save_document.actions import actions
+from app.ui.pages.save_document.handlers import save_document
 
 
 def section(title, content):
@@ -20,11 +21,12 @@ def section(title, content):
     )
 
 
-def view(page):
+def view(page, router, render):
 
     preview_view = preview()
     form_view = form()
     actions_view = actions()
+    actions_view.set_save_handler(lambda e: save_document(form_view, page, router, render))
 
     return ft.Container(
         expand=True,
