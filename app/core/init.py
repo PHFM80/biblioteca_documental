@@ -1,3 +1,4 @@
+#app\core\init.py
 from app.core.config import ensure_dirs
 
 def initialize_app():

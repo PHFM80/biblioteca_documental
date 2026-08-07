@@ -32,4 +32,6 @@ Thumbs.db
 dist/
 build/
 
-data/temp/
+data/
+
+app/doc/

@@ -3,7 +3,7 @@ from typing import Optional
 
 from app.db.database import get_connection
 from app.models import DocumentoPDF
-
+from datetime import date
 
 class DocumentoPDFRepository:
     """
@@ -38,7 +38,7 @@ class DocumentoPDFRepository:
                     documento_pdf.cantidad_paginas,
                     int(documento_pdf.tiene_ocr),
                     documento_pdf.nombre_chino,
-                    documento_pdf.fecha_recepcion,
+                    documento_pdf.fecha_recepcion.isoformat() if documento_pdf.fecha_recepcion else None,
                     int(documento_pdf.tiene_indexacion),
                     documento_pdf.texto_ocr_ruta,
                     documento_pdf.pdf_editable_ruta)
@@ -109,7 +109,7 @@ class DocumentoPDFRepository:
                     (documento_pdf.cantidad_paginas,
                     int(documento_pdf.tiene_ocr),
                     documento_pdf.nombre_chino,
-                    documento_pdf.fecha_recepcion,
+                    documento_pdf.fecha_recepcion.isoformat() if documento_pdf.fecha_recepcion else None,
                     int(documento_pdf.tiene_indexacion),
                     documento_pdf.texto_ocr_ruta,
                     documento_pdf.pdf_editable_ruta,
@@ -219,12 +219,16 @@ class DocumentoPDFRepository:
         Convierte una fila SQLite en un modelo DocumentoPDF.
         """
 
+        fecha_recepcion = None
+        if row["fecha_recepcion"]:
+            fecha_recepcion = date.fromisoformat(row["fecha_recepcion"])
+
         return DocumentoPDF(
             documento_id=row["documento_id"],
             cantidad_paginas=row["cantidad_paginas"],
             tiene_ocr=bool(row["tiene_ocr"]),
             nombre_chino=row["nombre_chino"],
-            fecha_recepcion=row["fecha_recepcion"],
+            fecha_recepcion=fecha_recepcion,
             tiene_indexacion=bool(row["tiene_indexacion"]),
             texto_ocr_ruta=row["texto_ocr_ruta"],
             pdf_editable_ruta=row["pdf_editable_ruta"])
