@@ -1,4 +1,3 @@
-#app\core\config.py
 from pathlib import Path
 import os
 import sys
@@ -55,7 +54,8 @@ LIBRARY_DIR = _resolve_library_dir(DATA_DIR)
 # =========================
 # ESTRUCTURA DE DATOS
 # =========================
-DB_PATH = DATA_DIR / "biblioteca.db"
+DATABASE_DIR = DATA_DIR / "database"
+DB_PATH = DATABASE_DIR / "biblioteca.db"
 OCR_DIR = DATA_DIR / "ocr"
 INDEX_DIR = DATA_DIR / "indexes"
 TEXT_INDEX_DIR = INDEX_DIR / "text"
@@ -71,6 +71,7 @@ LOGS_DIR = DATA_DIR / "logs"
 def ensure_dirs():
     directories = [
         DATA_DIR,
+        DATABASE_DIR,
         LIBRARY_DIR,
         OCR_DIR,
         INDEX_DIR,

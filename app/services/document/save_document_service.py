@@ -1,3 +1,4 @@
+#app\services\document\save_document_service.py
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -91,8 +92,9 @@ class SaveDocumentService:
         self.document_pdf_repository.create(documento_pdf)
 
         # 10. Ejecutar OCR si corresponde
+        source_images = [Path(page.image_path) for page in pages]
         if data.execute_ocr:
-            self.ocr_service.process(documento.id)
+            self.ocr_service.process(documento.id, source_images=source_images)
 
         # 11. Ejecutar Indexación si corresponde
         if data.execute_index:
